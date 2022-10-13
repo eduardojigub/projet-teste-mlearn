@@ -1,16 +1,21 @@
+/* eslint-disable operator-linebreak */
+/* eslint-disable no-await-in-loop */
+/* eslint-disable comma-dangle */
+/* eslint-disable no-plusplus */
 /* eslint-disable react/jsx-one-expression-per-line */
 import { useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 
 function Details() {
   const [characterDetails, setCharacterDetails] = useState([]);
-  // const [movies, setMovies] = useState([]);
+  const [films, setFilms] = useState([]);
   const { characterId } = useParams();
   const API_IMG_DETAILS = `https://starwars-visualguide.com/assets/img/characters/${characterId}.jpg`;
   const getCharacterDetails = async () => {
     const response = await fetch(`https://swapi.dev/api/people/${characterId}`);
     const data = await response.json();
-    setCharacterDetails(data, characterId);
+    setCharacterDetails(data);
+    setFilms(data.films);
   };
 
   useEffect(() => {
@@ -50,6 +55,10 @@ function Details() {
                 <div className="d-flex justify-content-between total font-weight-bold mt-4">
                   <span>Skin Color: {characterDetails?.skin_color}</span>
                   <span>HomeWorld: {characterDetails?.homeworld}</span>
+                  <span>
+                    Movies:{' '}
+                    {films && films.map((film) => <>{console.log(film)}</>)}
+                  </span>
                 </div>
               </div>
             </div>
