@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/prop-types */
 /* eslint-disable camelcase */
@@ -9,9 +10,11 @@ import CardActions from '@mui/material/CardActions';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/material';
 import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom';
 
 function CharacterCard({ character, index }) {
   const API_IMG = `https://starwars-visualguide.com/assets/img/characters/${index}.jpg`;
+  let characterId = index;
   const [species, setSpecies] = useState('');
 
   const getSpecies = async () => {
@@ -26,7 +29,7 @@ function CharacterCard({ character, index }) {
 
   return (
     <Card sx={{ maxWidth: 345 }}>
-      <CardMedia component="img" image={API_IMG} alt="Personagem" />
+      <CardMedia component="img" image={API_IMG} alt={character.name} />
       <CardContent>
         <Box
           display="flex"
@@ -48,9 +51,11 @@ function CharacterCard({ character, index }) {
           </Typography>
         </Box>
         <CardActions style={{ justifyContent: 'center' }}>
-          <Button variant="contained" size="small">
-            Ver Detalhes
-          </Button>
+          <Link to={`/users/${characterId}`}>
+            <Button variant="contained" size="small">
+              Ver Detalhes
+            </Button>
+          </Link>
         </CardActions>
       </CardContent>
     </Card>
