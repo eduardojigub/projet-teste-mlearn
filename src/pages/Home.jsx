@@ -1,18 +1,26 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable prefer-const */
 import React, { useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
+import axios from 'axios';
 import { Container } from '@mui/system';
 import CharacterCard from '../components/CharacterCard';
 import Skeletons from '../components/Skeletons';
 
-const API_URL = 'https://swapi.dev/api/people';
-
 function Home() {
   const [characters, setCharacters] = useState([]);
 
+  // referência https://stackoverflow.com/questions/71726702/swapi-pagination-with-node-js-express-and-axios
   const getCharacters = async () => {
-    const response = await fetch(API_URL);
-    const data = await response.json();
-    setCharacters(data.results);
+    let nextPage = 'https://swapi.dev/api/people/';
+    let people = [];
+    while (nextPage) {
+      let nextResponse = await axios(nextPage);
+      const { next, results } = await nextResponse.data;
+      nextPage = next;
+      people = [...people, ...results];
+    }
+    setCharacters(people);
   };
 
   useEffect(() => {
@@ -26,9 +34,13 @@ function Home() {
           {characters.length === 0 ? (
             <Skeletons />
           ) : (
-            characters.map((character) => (
+            characters.map((character, index) => (
               <Grid item xs={12} sm={6} md={4} lg={2} key={character.url}>
-                <CharacterCard key={character.url} character={character} />
+                <CharacterCard
+                  key={character.url}
+                  index={index + 1}
+                  character={character}
+                />
               </Grid>
             ))
           )}

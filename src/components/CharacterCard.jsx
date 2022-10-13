@@ -1,15 +1,17 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/prop-types */
 /* eslint-disable camelcase */
 import React, { useEffect, useState } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
+import CardActions from '@mui/material/CardActions';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/material';
+import Button from '@mui/material/Button';
 
-const API_IMG = 'https://starwars-visualguide.com/assets/img/characters/1.jpg';
-
-function CharacterCard({ character }) {
+function CharacterCard({ character, index }) {
+  const API_IMG = `https://starwars-visualguide.com/assets/img/characters/${index}.jpg`;
   const [species, setSpecies] = useState('');
 
   const getSpecies = async () => {
@@ -24,7 +26,7 @@ function CharacterCard({ character }) {
 
   return (
     <Card sx={{ maxWidth: 345 }}>
-      <CardMedia component="img" image={API_IMG} alt="Olá, eu sou o Luke" />
+      <CardMedia component="img" image={API_IMG} alt="Personagem" />
       <CardContent>
         <Box
           display="flex"
@@ -33,15 +35,23 @@ function CharacterCard({ character }) {
           flexDirection="column"
         >
           <Typography variant="h6" component="div">
-            {character.name}
+            {character?.name}
           </Typography>
           <Typography mt={1} component="div">
-            {species.name}
+            Specie: {species?.name ? species.name : 'Unspecified'}
           </Typography>
           <Typography mt={1} component="div">
-            {character.birth_year}
+            Birth Date: {character?.birth_year}
+          </Typography>{' '}
+          <Typography mt={1} component="div">
+            {index}
           </Typography>
         </Box>
+        <CardActions style={{ justifyContent: 'center' }}>
+          <Button variant="contained" size="small">
+            Ver Detalhes
+          </Button>
+        </CardActions>
       </CardContent>
     </Card>
   );
