@@ -30,7 +30,7 @@ function Home() {
   return (
     <div>
       <Container maxWidth="xl">
-        <Grid mt={5} container spacing={3}>
+        <Grid container spacing={3}>
           {characters.length === 0 ? (
             <Skeletons />
           ) : (

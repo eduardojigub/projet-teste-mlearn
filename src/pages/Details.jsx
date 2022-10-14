@@ -34,14 +34,12 @@ function Details() {
     getCharacterDetails();
   }, []);
 
-  useEffect(() => {
-    const getHomeWorld = async () => {
-      const response = await fetch(characterDetails?.homeworld);
-      const data = await response.json();
-      setHomeWorld(data);
-    };
-    getHomeWorld();
-  }, []);
+  const getHomeWorld = async () => {
+    const response = await fetch(characterDetails?.homeworld);
+    const data = await response.json();
+    setHomeWorld(data);
+  };
+  getHomeWorld();
 
   return (
     <section style={{ backgroundColor: '#eee' }}>
