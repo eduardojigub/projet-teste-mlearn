@@ -1,15 +1,12 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import Details from './pages/Details';
+import { Outlet } from 'react-router-dom';
+import Navbar from './components/Navbar';
 
 function App() {
   return (
-    <div className="App">
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/users/:characterId" element={<Details />} />
-      </Routes>
+    <div>
+      <Navbar />
+      <Outlet />
     </div>
   );
 }

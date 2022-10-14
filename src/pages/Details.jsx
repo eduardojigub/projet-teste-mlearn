@@ -1,3 +1,6 @@
+/* eslint-disable no-console */
+/* eslint-disable max-len */
+/* eslint-disable react/jsx-indent */
 /* eslint-disable operator-linebreak */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable comma-dangle */
@@ -9,8 +12,12 @@ import React, { useState, useEffect } from 'react';
 function Details() {
   const [characterDetails, setCharacterDetails] = useState([]);
   const [films, setFilms] = useState([]);
+  const [finalPromise, setFinalPromise] = useState([]);
+  const [homeworld, setHomeWorld] = useState([]);
+
   const { characterId } = useParams();
   const API_IMG_DETAILS = `https://starwars-visualguide.com/assets/img/characters/${characterId}.jpg`;
+
   const getCharacterDetails = async () => {
     const response = await fetch(`https://swapi.dev/api/people/${characterId}`);
     const data = await response.json();
@@ -19,7 +26,21 @@ function Details() {
   };
 
   useEffect(() => {
+    const filmsResolved = films.map(async (film) => fetch(film).then((res) => res.json()));
+    Promise.all(filmsResolved).then((results) => setFinalPromise(results));
+  }, [films]);
+
+  useEffect(() => {
     getCharacterDetails();
+  }, []);
+
+  useEffect(() => {
+    const getHomeWorld = async () => {
+      const response = await fetch(characterDetails?.homeworld);
+      const data = await response.json();
+      setHomeWorld(data);
+    };
+    getHomeWorld();
   }, []);
 
   return (
@@ -28,7 +49,6 @@ function Details() {
         <div className="row justify-content-center">
           <div className="col-md-8 col-lg-6 col-xl-4">
             <div className="card text-black">
-              <i className="fab fa-apple fa-lg pt-3 pb-1 px-3" />
               <img
                 src={API_IMG_DETAILS}
                 className="card-img-top"
@@ -50,15 +70,11 @@ function Details() {
                   <div className="d-flex justify-content-between">
                     <span>Height: {characterDetails?.height}</span>
                     <span>Mass: {characterDetails?.mass}</span>
+                    <span> Homeworld: {homeworld.name ? homeworld.name : 'Unspecified'}</span>
                   </div>
                 </div>
-                <div className="d-flex justify-content-between total font-weight-bold mt-4">
-                  <span>Skin Color: {characterDetails?.skin_color}</span>
-                  <span>HomeWorld: {characterDetails?.homeworld}</span>
-                  <span>
-                    Movies:{' '}
-                    {films && films.map((film) => <>{console.log(film)}</>)}
-                  </span>
+                <div className="d-flex justify-content-between font-weight-bold mt-4">
+                <div>Movies:{finalPromise?.map((filme) => <ul key={filme.edited}><li>{filme.title}</li></ul>)}</div>
                 </div>
               </div>
             </div>

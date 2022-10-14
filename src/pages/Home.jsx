@@ -35,9 +35,9 @@ function Home() {
             <Skeletons />
           ) : (
             characters.map((character, index) => (
-              <Grid item xs={12} sm={6} md={4} lg={2} key={character.url}>
+              <Grid item xs={12} sm={6} md={4} lg={2} key={character.created}>
                 <CharacterCard
-                  key={character.url}
+                  key={character.created}
                   index={index + 1}
                   character={character}
                 />
